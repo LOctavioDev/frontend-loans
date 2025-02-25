@@ -46,13 +46,13 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const goToUser = (id) => navigate(`/user/${id}`);
+  const goToUser = (id) => navigate(`/user-edit/${id}`);
 
   const handleConfirmDelete = async () => {
     if (!selectedUser) return;
     setIsDeleting(true);
     try {
-      await api.delete(`/user/${selectedUser.id}`);
+      await api.delete(`/user-edit/${selectedUser.id}`);
       setUsers((prev) => prev.filter((user) => user.id !== selectedUser.id));
       setNotification({
         open: true,
@@ -138,8 +138,6 @@ const Users = () => {
       ),
     },
   ];
-
-  if (loading) return <Loader />;
 
   return (
     <Box m="20px">

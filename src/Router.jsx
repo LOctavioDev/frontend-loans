@@ -9,9 +9,10 @@ import {
   LoansForm
 } from "./scenes";
 import { Login } from "./components/Login";
-// import UserEdit from "./scenes/useredit";
+import UserEdit from "./scenes/user-edit";
+import MaterialEdit from "./scenes/material-edit";
+import LoanEdit from "./scenes/loans-edit";
 import PrivateRouter from "./services/PrivateRouter";
-// import {Historial} from "./scenes/useredit/historial";
 
 const AppRouter = () => {
   return (
@@ -27,6 +28,9 @@ const AppRouter = () => {
             <Route path="/crear-material" element={<MaterialForm />} />
             <Route path="/crear-usuario" element={<UserForm />} />
             <Route path="/crear-prestamo" element={<LoansForm />} />
+            <Route path="/user-edit/:idUser" element={<UserEdit />} />
+            <Route path="/material-edit/:idMaterial" element={<MaterialEdit />} />
+            <Route path="/loan-edit/:idLoan" element={<LoanEdit />} />
           </Route>
         </Route>
       </Routes>

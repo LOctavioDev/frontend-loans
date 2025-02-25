@@ -2,7 +2,7 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { useContext, useState } from 'react';
 import { tokens } from '../../../theme';
 import { Menu, MenuItem, Sidebar } from 'react-pro-sidebar';
-import { MenuOutlined, PeopleAltOutlined, PersonOutlined } from '@mui/icons-material';
+import { MenuOutlined, PeopleAltOutlined, PersonOutlined, Inventory, CreditScore } from '@mui/icons-material';
 import Item from './Item';
 import { ToggledContext } from '../../../App';
 
@@ -86,7 +86,7 @@ const SideBar = () => {
             title="Materiales"
             path="/materiales"
             colors={colors}
-            icon={<PeopleAltOutlined />}
+            icon={<Inventory />}
           />
           <Item
             title="Usuarios"
@@ -98,7 +98,7 @@ const SideBar = () => {
             title="Préstamos"
             path="/prestamos"
             colors={colors}
-            icon={<PeopleAltOutlined />}
+            icon={<CreditScore />}
           />
         </Menu>
         <Typography
@@ -123,7 +123,7 @@ const SideBar = () => {
             title="Crear material"
             path="/crear-material"
             colors={colors}
-            icon={<PersonOutlined />}
+            icon={<Inventory />}
           />
           <Item
             title="Crear usuario"
@@ -135,7 +135,7 @@ const SideBar = () => {
             title="Crear préstamo"
             path="/crear-prestamo"
             colors={colors}
-            icon={<PersonOutlined />}
+            icon={<CreditScore />}
           />
         </Menu>
       </Box>

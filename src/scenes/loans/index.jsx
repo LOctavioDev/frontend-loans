@@ -14,7 +14,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import api from '../../services/apiService';
 import { tokens } from '../../theme';
 import { useNavigate } from 'react-router-dom';
-import Loader from '../../components/Loader';
+import LoanReportPDF from '../../components/LoanReportPDF';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 const Loans = () => {
   const theme = useTheme();
@@ -25,6 +26,7 @@ const Loans = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [openPreview, setOpenPreview] = useState(false);
 
   useEffect(() => {
     const fetchLoans = async () => {
@@ -41,11 +43,11 @@ const Loans = () => {
     fetchLoans();
   }, []);
 
-  const goToLoan = (id) => navigate(`/loan/${id}`);
+  const goToLoan = (id) => navigate(`/loan-edit/${id}`);
 
   const handleConfirmDelete = async () => {
     if (!selectedLoan) return;
-console.log(selectedLoan.loan_id);
+    console.log(selectedLoan.loan_id);
     setIsDeleting(true);
     try {
       await api.delete(`/loan/${selectedLoan.loan_id}`);
@@ -130,14 +132,44 @@ console.log(selectedLoan.loan_id);
     },
   ];
 
-  if (loading) return <Loader />;
-
   return (
     <Box m="20px">
-      <Header
-        title="Préstamos"
-        subtitle="Gestión de préstamos"
-      />
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Header
+          title="Préstamos"
+          subtitle="Gestión de préstamos"
+        />
+        <Box
+          display="flex"
+          gap="10px"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenPreview(true)}
+          >
+            Vista Previa
+          </Button>
+          <PDFDownloadLink
+            document={<LoanReportPDF loans={loans} />}
+            fileName="reporte_prestamos.pdf"
+          >
+            {({ loading }) => (
+              <Button
+                variant="contained"
+                color="primary"
+                disabled={loading}
+              >
+                {loading ? 'Generando PDF...' : 'Descargar Reporte'}
+              </Button>
+            )}
+          </PDFDownloadLink>
+        </Box>
+      </Box>
       <Box
         mt="40px"
         height="75vh"
@@ -163,11 +195,11 @@ console.log(selectedLoan.loan_id);
         <DialogTitle>Confirmar eliminación</DialogTitle>
         <DialogContent>
           <Typography>
-            ¿Seguro que deseas eliminar el préstamo de {' '}
+            ¿Seguro que deseas eliminar el préstamo de{' '}
             <strong>
               {selectedLoan?.user?.first_name} {selectedLoan?.user?.last_name}
             </strong>
-            del material {' '}
+            del material{' '}
             <strong>
               {selectedLoan?.material?.material_type} - {selectedLoan?.material?.brand}{' '}
               {selectedLoan?.material?.model}
@@ -188,6 +220,31 @@ console.log(selectedLoan.loan_id);
             disabled={isDeleting}
           >
             {isDeleting ? 'Eliminando...' : 'Confirmar'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={openPreview}
+        onClose={() => setOpenPreview(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle>Vista Previa del Reporte</DialogTitle>
+        <DialogContent>
+          <PDFViewer
+            width="100%"
+            height="500px"
+          >
+            <LoanReportPDF loans={loans} />
+          </PDFViewer>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setOpenPreview(false)}
+            color="primary"
+          >
+            Cerrar
           </Button>
         </DialogActions>
       </Dialog>

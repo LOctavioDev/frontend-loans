@@ -47,7 +47,7 @@ const Materials = () => {
     fetchMaterials();
   }, []);
 
-  const goToMaterial = (id) => navigate(`/material/${id}`);
+  const goToMaterial = (id) => navigate(`/material-edit/${id}`);
 
   const handleConfirmDelete = async () => {
     if (!selectedMaterial) return;
